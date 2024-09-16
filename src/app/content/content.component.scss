@@ -1,0 +1,15 @@
+div {
+    background-color: white;
+    padding: 3rem;
+    border-radius: 8px;
+    margin: 2rem 4rem;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+
+  @media (max-width: 575px) {
+    div {
+        margin: 2rem 1rem;
+        padding: 2rem;
+    }
+  }
+  

@@ -1,0 +1,23 @@
+<div class="container" id="chart-data">
+    <h3>Comprehensive Data Overview ({{this.selectedOption$.value}})</h3>
+    <div class="exclamation-mark">
+        <img src="assets/exclamation-mark.svg" alt="Exclamation mark" width="50px">
+        <span class="tooltiptext"><b>Data Source:</b> The information displayed on this page is sourced from
+            ourworldindata.org, which provides up-to-date and accurate data on global statistics. For more details,
+            visit https://ourworldindata.org/mpox.
+        </span>
+    </div>
+    <div class="input-container">
+        <div class="countries-container">
+            <input type="text" id="input" placeholder="Search for location" (input)="filterCountries($event)">
+            <ul>
+                @for (country of this.filteredCountries; track country) {
+                <li><a (click)="selectCountry(country)">{{country}}</a></li>
+                }
+            </ul>
+        </div>
+        <div class="chart-container">
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+</div>

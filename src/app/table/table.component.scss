@@ -1,0 +1,92 @@
+.wrapper {
+  background-color: white;
+  padding: 3rem;
+  border-radius: 8px;
+  text-align: center;
+  margin: 2rem 4rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  position: relative;
+}
+
+.table-container {
+  height: 500px;
+  overflow: auto;
+}
+
+table {
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th {
+  border-radius: 8px;
+}
+
+th:hover,
+tr:hover,
+tr:nth-child(even):hover {
+  background-color: rgb(228, 229, 234);
+}
+
+th:hover {
+  cursor: pointer;
+}
+
+th:active {
+  background-color: rgb(190, 191, 196);
+}
+
+td {
+  width: 30%;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(247, 248, 252, 1);
+  margin: 0;
+}
+
+// Data source
+.exclamation-mark {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.exclamation-mark .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+
+  top: -5px;
+  right: 105%;
+  position: absolute;
+  z-index: 1;
+}
+.exclamation-mark:hover {
+  cursor: pointer;
+}
+.exclamation-mark:hover .tooltiptext {
+  visibility: visible;
+}
+
+// Media queries
+@media (max-width: 767px) {
+  .wrapper {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .exclamation-mark {
+    top: 10px;
+    right: 10px;
+  }
+
+  .exclamation-mark img {
+    width: 30px;
+  }
+}

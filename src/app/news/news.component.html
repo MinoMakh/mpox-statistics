@@ -1,0 +1,17 @@
+<div class="swiper" id="news">
+    <h3>Latest News and Articles on Mpox</h3>
+    <p>
+        Discover the latest news and articles from various sources about the Mpox virus. Our curated links help you stay
+        informed with up-to-date information and expert coverage.
+    </p>
+    <swiper-container slides-per-view="3" speed="500" loop="true" class="swiper-wrapper">
+        @for (news of this.newsArticles; track $index) {
+        <swiper-slide lazy="true" class="swiper-slide">
+            <img [src]="news.urlToImage" alt="News Image" loading="lazy">
+            <h3>{{ news.title }}</h3>
+            <p>{{ news.description }}</p>
+            <a [href]="news.url" target="_blank">Read more</a>
+        </swiper-slide>
+        }
+    </swiper-container>
+</div>

@@ -1,0 +1,126 @@
+.container {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 8px;
+  margin: 2rem 4rem;
+  padding: 3rem;
+  text-align: center;
+  font-size: large;
+  background-color: white;
+  position: relative;
+}
+
+.countries-container {
+  height: 50vh;
+  overflow: auto;
+  background-color: rgba(247, 248, 252, 1);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.chart-container {
+  width: 70%;
+}
+
+#chart {
+  width: 100%;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  display: block;
+}
+
+a:hover {
+  background-color: rgb(228, 229, 234);
+  cursor: pointer;
+}
+
+input {
+  border-radius: 8px;
+  padding: 0.5rem;
+  border-color: gray;
+  font-family: Poppins;
+}
+
+// Data source
+.exclamation-mark {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.exclamation-mark .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+
+  top: -5px;
+  right: 105%;
+  position: absolute;
+  z-index: 1;
+}
+.exclamation-mark:hover {
+  cursor: pointer;
+}
+.exclamation-mark:hover .tooltiptext {
+  visibility: visible;
+}
+
+// Media queries
+@media (max-width: 1200px) {
+    .container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 976px) {
+    .container {
+        margin: 2rem 0 0 0;
+        padding: 0;
+    }
+    .input-container {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .countries-container {
+        max-height: 250px;
+    }
+
+    .chart-container {
+        width: 100%;
+      }
+
+      .svg-container {
+        margin: 0rem;
+        padding: 0rem;
+      }
+    
+      .svg-container svg{
+        width: 120%;
+      }
+      
+      .exclamation-mark {
+        top: 40px;
+        right: 10px;
+      }
+    
+      .exclamation-mark img {
+        width: 30px;
+      }
+}

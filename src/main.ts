@@ -1,6 +1,11 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
+import { provideHttpClient } from '@angular/common/http';
+import { register as registerSwiperElement } from 'swiper/element';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+registerSwiperElement();
+
+bootstrapApplication(AppComponent, {
+  providers: [provideHttpClient()]
+})
+.catch(err => console.error(err));

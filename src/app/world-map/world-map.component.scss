@@ -1,0 +1,86 @@
+.svg-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  margin: 1rem 4rem;
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.svg-container svg {
+  width: 90vw;
+  height: auto;
+  max-height: 80vh;
+}
+
+path {
+  cursor: pointer;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 0px;
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 3px;
+  pointer-events: none;
+  display: none;
+}
+
+.exclamation-mark img {
+  width: 50px;
+}
+
+// Data source
+.exclamation-mark {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.exclamation-mark .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+  top: -5px;
+  right: 105%;
+  position: absolute;
+}
+.exclamation-mark:hover {
+  cursor: pointer;
+}
+.exclamation-mark:hover .tooltiptext {
+  visibility: visible;
+}
+
+// Media queries
+@media (max-width: 991px) {
+  .svg-container {
+    margin: 0rem;
+    padding: 0rem;
+  }
+
+  .svg-container svg{
+    width: 120%;
+  }
+  
+  .exclamation-mark {
+    top: 10px;
+    right: 10px;
+  }
+
+  .exclamation-mark img {
+    width: 30px;
+  }
+}
