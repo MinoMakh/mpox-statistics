@@ -6,30 +6,47 @@ import { DataService } from '../services/data.service';
   standalone: true,
   imports: [],
   templateUrl: './world-map.component.html',
-  styleUrl: './world-map.component.scss',
+  styleUrls: ['./world-map.component.scss'],
 })
 export class WorldMapComponent implements OnInit {
-  constructor(private dataService: DataService) {}
-
   latestEntries: any[] = [];
   minCases = Number.MAX_VALUE;
   maxCases = Number.MIN_VALUE;
   totalCases = 0;
+  loading = true;
+
+  constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
     this.dataService.getData().subscribe({
-      next: (data: any[]) => {
+      next: () => {
         this.latestEntries = this.dataService.latestEntries.value;
-        this.minCases = this.dataService.minCases;
-        this.maxCases = this.dataService.maxCases;
         this.totalCases = this.dataService.totalCases;
-        this.colorCountries();
-        this.addToolTips();
+        this.dataService.minCases
+          .asObservable()
+          .subscribe((min) => (this.minCases = min));
+        this.dataService.maxCases
+          .asObservable()
+          .subscribe((max) => (this.maxCases = max));
+        console.log(this.dataService.loading.value);
+
+        if (!this.dataService.loading.value) {
+          this.colorCountries();
+          this.addToolTips();
+        }
       },
       error: (err) => {
         console.error('Error fetching data:', err);
+        this.loading = false;
       },
     });
+
+    // this.dataService.loading.asObservable().subscribe(() => {
+    //   if (!this.dataService.loading.value) {
+    //     this.colorCountries();
+    //     this.addToolTips();
+    //   }
+    // });
   }
 
   colorCountries(): void {
@@ -61,38 +78,41 @@ export class WorldMapComponent implements OnInit {
   }
 
   addToolTips() {
-    document.addEventListener('DOMContentLoaded', () => {
-      const tooltip = document.getElementById('tooltip') as HTMLDivElement;
+    console.log('hello2');
 
-      document.querySelectorAll<SVGElement>('path').forEach((element) => {
-        element.addEventListener('mouseover', (event) => {
-          const target = event.target as SVGElement;
+    const tooltip = document.getElementById('tooltip') as HTMLDivElement;
+    console.log(tooltip);
 
-          // Get the name from either the class attribute or name attribute
-          const countryName =
-            target.getAttribute('name') ||
-            target.getAttribute('class') ||
-            'Unknown Country';
+    document.querySelectorAll<SVGElement>('path').forEach((element) => {
+      element.addEventListener('mouseover', (event) => {
+        const target = event.target as SVGElement;
+        console.log(target);
 
-          const country = this.latestEntries.find(
-            (country) => country.location == countryName
-          );
+        // Get the name from either the class attribute or name attribute
+        const countryName =
+          target.getAttribute('name') ||
+          target.getAttribute('class') ||
+          'Unknown Country';
 
-          console.log(countryName);
-          
-          tooltip.innerHTML = `Country: ${countryName}<br>Total Cases: ${country.total_cases ?? 0}<br>Total Deaths: ${country.total_deaths ?? 0}<br>New Cases: ${country.new_cases ?? 0}`;
+        console.log(countryName);
+
+        const country = this.latestEntries.find(
+          (country) => country.location == countryName
+        );
+        console.log(country);
+
+        if (country) {
+          tooltip.innerHTML = `Country: ${countryName}<br>Total Cases: ${
+            country.total_cases || 0
+          }<br>Total Deaths: ${country.total_deaths || 0}<br>New Cases: ${
+            country.new_cases || 0
+          }`;
           tooltip.style.display = 'block';
-        });
+        }
+      });
 
-        element.addEventListener('mousemove', (event) => {
-          // Optionally, update tooltip position if needed while moving
-        });
-
-        element.addEventListener('mouseout', () => {
-          tooltip.style.display = 'none';
-          console.log(this.latestEntries);
-          
-        });
+      element.addEventListener('mouseout', () => {
+        tooltip.style.display = 'none';
       });
     });
   }

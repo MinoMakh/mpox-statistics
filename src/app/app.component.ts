@@ -31,21 +31,6 @@ import { FooterComponent } from "./footer/footer.component";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
-  title = 'Angular';
-  data: any[] = [];
+export class AppComponent  {
 
-  constructor(private dataService: DataService) {}
-
-  ngOnInit(): void {
-    this.dataService.getData().subscribe({
-      next: (data: any[]) => {
-        this.data = data;
-        console.log('Data received:', this.data);
-      },
-      error: (err) => {
-        console.error('Error fetching data:', err);
-      },
-    });
-  }
 }

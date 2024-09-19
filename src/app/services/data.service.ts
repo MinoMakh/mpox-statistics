@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import * as Papa from 'papaparse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  private dataUrl = 'assets/data.json';
+  private dataUrl =
+    'https://catalog.ourworldindata.org/explorers/who/latest/monkeypox/monkeypox.csv';
   private dataSubject = new BehaviorSubject<any[]>([]);
+  loading = new BehaviorSubject<boolean>(true);
 
   latestEntries = new BehaviorSubject<any[]>([]);
-  minCases = Number.MAX_VALUE;
-  maxCases = Number.MIN_VALUE;
+  minCases = new BehaviorSubject<number>(Number.MAX_VALUE);
+  maxCases = new BehaviorSubject<number>(Number.MIN_VALUE);
   totalCases = 0;
   totalDeaths = 0;
   newCases = 0;
@@ -34,16 +37,30 @@ export class DataService {
 
   private loadData(): void {
     this.http
-      .get<any[]>(this.dataUrl)
+      .get(this.dataUrl, { responseType: 'text' })
       .pipe(
         tap({
-          next: (data) => {
-            this.processData(data);
-            this.getTotalDeathsAndNewCases(data);
-            this.getTotalCases();
-            this.dataSubject.next(data);
+          next: (csvData) => {
+            Papa.parse(csvData, {
+              header: true,
+              complete: (result) => {
+                const data = result.data as any[];
+                this.processData(data);
+                this.getTotalDeathsAndNewCases(data);
+                this.getTotalCases();
+                this.loading.next(false);
+                this.dataSubject.next(data);
+              },
+              error: (error: any) => {
+                console.error('Error parsing CSV data.', error);
+                this.loading.next(false);
+              },
+            });
           },
-          error: (error) => console.error('Error loading data.', error),
+          error: (error) => {
+            console.error('Error loading data.', error);
+            this.loading.next(false);
+          },
         })
       )
       .subscribe();
@@ -56,20 +73,17 @@ export class DataService {
       const location = item.location;
       const currentDate = new Date(item.date);
 
-      if (
-        !latestEntriesMap.has(location) ||
-        currentDate > new Date(latestEntriesMap.get(location).date)
-      ) {
+      if (!latestEntriesMap.has(location) ||
+        currentDate > new Date(latestEntriesMap.get(location).date)) {
         latestEntriesMap.set(location, item);
-        if (item != null && item.total_cases != 0) {
-          this.minCases = Math.min(this.minCases, item.total_cases);
+        
+        // Calculating min and max values
+        if (item && item.total_cases && item.total_cases != 0) {
+          this.minCases.next(Math.min(this.minCases.value, item.total_cases));
         }
-        if (
-          !this.continents.some((continent) =>
-            String(item.location).includes(continent)
-          )
-        ) {
-          this.maxCases = Math.max(this.maxCases, item.total_cases);
+        if (item && item.total_cases && !this.continents.some((continent) =>
+            String(item.location).includes(continent))) {
+          this.maxCases.next(Math.max(this.maxCases.value, item.total_cases));
         }
       }
     });
@@ -78,8 +92,10 @@ export class DataService {
   }
 
   getTotalCases() {
-    const world = this.latestEntries.value.filter((c) => c.location == 'World')[0];
-    this.totalCases = world.total_cases;
+    const world = this.latestEntries.value.find((c) => c.location === 'World');
+    if (world) {
+      this.totalCases = world.total_cases;
+    }
   }
 
   getTotalDeathsAndNewCases(data: any[]): void {
@@ -93,8 +109,6 @@ export class DataService {
 
       this.totalDeaths = latestEntry.total_deaths;
       this.newCases = latestEntry.new_cases;
-    } else {
-      console.warn('No data found for the location "World".');
     }
   }
 }
