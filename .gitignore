@@ -1,5 +1,4 @@
 # Ignore the config service file
-src/app/config.service.ts
 
 # Compiled output
 /dist
