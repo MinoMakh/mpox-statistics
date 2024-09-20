@@ -1,6 +1,6 @@
 # **Mpox Statistics Dashboard**
 
-A comprehensive **Mpox Statistics Dashboard** built with Angular, offering up-to-date information about Mpox. The dashboard includes:
+A comprehensive **Mpox Statistics Dashboard** built with Angular, offering up-to-date information about Mpox. Live View: https://minomakh.github.io/mpox-statistics/ The dashboard includes:
 
 - 📊 **Statistics**: Key numbers and data related to Mpox.
 - 🌍 **Map**: Geographical distribution of cases.
